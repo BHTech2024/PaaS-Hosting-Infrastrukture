@@ -144,8 +144,8 @@ Full localizations (plumbing through dynamic React translations) across all page
 To run the Liveforge platform in a production environment, you will need active accounts and API access credentials for the following third-party providers:
 
 1. **Hetzner Cloud (Compute VPS Provider)**
-   * **Purpose:** Automated server provisioning (launching, stopping, resizing, and deleting VPS instances on-demand).
-   * **Requirements:** A Hetzner Cloud project with a generated **Read/Write API Token**.
+   * **Purpose:** Syncing billing anchors, outbound traffic metrics, and VPS cost data to track server usage and capacity.
+   * **Requirements:** A Hetzner Cloud project with a generated only (Read) API Token.
 
 2. **Cloudflare (DNS & SSL Management)**
    * **Purpose:** Dynamically updating DNS records (A/AAAA) for customer subdomains, and completing DNS-01 ACME challenges for automatic wildcard SSL/TLS certificate issuing at the node level.
