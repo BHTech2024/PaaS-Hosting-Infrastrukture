@@ -139,6 +139,28 @@ Full localizations (plumbing through dynamic React translations) across all page
 
 ---
 
+## 🔌 Required Third-Party Services & APIs
+
+To run the Liveforge platform in a production environment, you will need active accounts and API access credentials for the following third-party providers:
+
+1. **Hetzner Cloud (Compute VPS Provider)**
+   * **Purpose:** Automated server provisioning (launching, stopping, resizing, and deleting VPS instances on-demand).
+   * **Requirements:** A Hetzner Cloud project with a generated **Read/Write API Token**.
+
+2. **Cloudflare (DNS & SSL Management)**
+   * **Purpose:** Dynamically updating DNS records (A/AAAA) for customer subdomains, and completing DNS-01 ACME challenges for automatic wildcard SSL/TLS certificate issuing at the node level.
+   * **Requirements:** Domain nameservers delegated to Cloudflare, an active Cloudflare Zone, and an **API Token** with permissions: `Zone -> DNS -> Edit` and `Zone -> Zone -> Read`.
+
+3. **Stripe (Prepaid Wallet Payments)**
+   * **Purpose:** Securely processing customer wallet credit deposits and tracking transaction state changes via webhooks.
+   * **Requirements:** A Stripe account with developer keys (**Publishable Key**, **Secret Key**, and a **Webhook Signing Secret**).
+
+4. **SMTP Gateway (Email Delivery)**
+   * **Purpose:** Delivering secure Multi-Factor Authentication (MFA OTP) login codes, deposit invoices, billing alerts, and support ticket notifications.
+   * **Requirements:** Credentials for any standard SMTP server (e.g., Google SMTP, Amazon SES, SendGrid, Mailgun).
+
+---
+
 ## 💻 Tech Stack
 
 ### Client Frontend
