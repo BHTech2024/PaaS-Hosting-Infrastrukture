@@ -180,7 +180,7 @@ To run the Liveforge platform in a production environment, you will need active 
 
 ## ✉️ Inquiry & Acquisition Details
 
-This software is commercial, proprietary, and fully tested in a live staging environment. For pricing, full repository access, technical walk-throughs, or commercial inquiries, contact BHTech:
+This software is commercial, proprietary, and fully tested in a live staging environment. For pricing, obtaining a compiled release package with a domain-locked license, technical walk-throughs, or commercial inquiries, contact BHTech:
 
 * **Contact Email**: **[bhtech2024@gmail.com](mailto:bhtech2024@gmail.com)**
 * **Official Website / Demo:** **[https://www.liveforge.io](https://www.liveforge.io)**
