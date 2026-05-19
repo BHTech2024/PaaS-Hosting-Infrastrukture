@@ -27,16 +27,21 @@ Here is a visual overview of the premium, developer-first user interface of the 
 
 ---
 
-## 💼 What Is For Sale?
+## 💼 What Is For Sale & License Terms
 
-By purchasing this project, you acquire the complete rights, source code, and production deployment pipeline of a modern, enterprise-grade cloud hosting software:
+By purchasing this software, you acquire a modern, enterprise-grade cloud hosting panel and infrastructure manager:
 
-* **Production-Grade Monorepo**: Complete Frontend (Vite + TanStack Start + SSR + React 19) and Backend Engine (Node.js + Fastify + PostgreSQL).
-* **Cryptographic Domain License Verification Engine**: Built-in V8 bytecode generation scripts to compile and license the software to third-party clients (fully protecting your intellectual property, ensuring client instances can only run on their licensed domains).
+* **Production-Ready Monorepo**: Complete Frontend (Vite + TanStack Start + SSR + React 19) and Backend Engine (Node.js + Fastify + PostgreSQL).
 * **Automated VPS Server Provisioning & Setup scripts**: Automates UFW firewalls, Docker engines, and Caddy proxy layers on newly spawned Hetzner Cloud instances (easily adaptable to other VPS providers).
 * **Fully Integrated Financial Ledger**: Secure Stripe payments processing, real-time burn-rate calculations, and automated credit balance tracking.
 * **MFA OTP Security Gates**: Multi-factor email OTP logins and restricted operator admin panels.
 * **Real-Time Observability Stack**: SSE streams for live health metrics (CPU, RAM, Disk, Net), container logs, and deployment events.
+
+> 🔒 **Licensing & Source Code Protection:**
+> To protect the proprietary billing and orchestration algorithms, **certain core system files are encrypted, compiled into V8 bytecode, and locked** via our license verification system.
+>
+> 🔑 **License Term:**
+> Each purchase grants a **domain-locked license valid for one (1) year per domain** (*licenca važi na period od 1 godine po domeni*). Operation is restricted to the registered domain name(s).
 
 ---
 
