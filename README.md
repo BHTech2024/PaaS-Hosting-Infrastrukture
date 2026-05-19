@@ -38,7 +38,7 @@ By purchasing this software, you acquire a modern, enterprise-grade cloud hostin
 * **Real-Time Observability Stack**: SSE streams for live health metrics (CPU, RAM, Disk, Net), container logs, and deployment events.
 
 > 🔒 **Licensing & Source Code Protection:**
-> To protect the proprietary billing and orchestration algorithms, **certain core system files are obfuscated, compiled into V8 bytecode, and locked** via our license verification system.
+> To protect intellectual property, certain core billing and orchestration modules are distributed in a compiled format and protected via our license verification system.
 >
 > 🔑 **License Term:**
 > Each purchase grants a **domain-locked license valid for one (1) year per domain** (*licenca važi na period od 1 godine po domeni*). Operation is restricted to the registered domain name(s).
