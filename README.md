@@ -56,21 +56,22 @@ flowchart TD
         i18n["Localization (EN, BS, SR, DE)"]
     end
 
-    subgraph LiveforgeEngine ["Liveforge Backend Engine (Node.js + Fastify)"]
+    subgraph PanelVPSEngine ["Panel VPS A (Engine & Central Proxy)"]
         API["Fastify REST API"]
         SSE["SSE Event Bus"]
         Billing["Hourly Wallet Billing Engine"]
         Cron["Task Scheduler (cron-parser)"]
         SSH["SSH Orchestration Client"]
+        CentralCaddy["Central Caddy (Wildcard SSL Termination)"]
+        Maps["Dynamic Routing Map (caddy_maps.txt)"]
     end
 
     subgraph CloudInfra ["Cloud Infrastructure"]
         Hetzner["Hetzner Cloud VPS Provisioner"]
-        Cloudflare["Cloudflare DNS-01 API"]
+        Cloudflare["Cloudflare DNS-01 API (TXT Challenges Only)"]
     end
 
-    subgraph IsolatedVPS ["Isolated Customer VPS Node"]
-        Caddy["Caddy Reverse Proxy"]
+    subgraph WorkerVPS ["Isolated Customer VPS Node"]
         Docker["Docker Engine"]
         Containers["Deployed Apps (docker-compose)"]
     end
@@ -81,19 +82,26 @@ flowchart TD
     Cron -->|Secure docker exec| SSH
     API -->|Deploy Lifecycle / UFW Firewall| SSH
     API -->|Provision VPS| Hetzner
-    API -->|Wildcard SSL DNS Records| Cloudflare
+    API -->|TXT Record for Wildcard SSL| Cloudflare
+    API -->|Update Map & Reload Caddy| Maps
+    Maps -->|Dynamic Host Lookup| CentralCaddy
+    CentralCaddy -->|Reverse Proxy over HTTPS| Containers
     SSH -->|Encrypted Remote Exec| Docker
-    Caddy -->|Dynamic TLS Edge Routing| Containers
 ```
 
 ### 1. On-Demand VPS Provisioning
 When a user rents a server, the backend communicates with the **Hetzner Cloud API** to spawn a fresh, isolated VPS. Over a secure SSH tunnel, the Liveforge engine automatically prepares the instance:
 - Installs and configures the **Docker Engine**.
 - Sets up a secure **UFW Firewall** allowing only traffic ports (80/443) and encrypted control channels.
-- Deploys a managed **Caddy** edge router.
 
-### 2. Multi-Tenant Edge Routing & Wildcard SSL
-When you deploy an application, the engine updates DNS records dynamically via the **Cloudflare API**. It routes `<app-slug>.<your-domain>.com` to the node. The local Caddy proxy terminates TLS at the network edge, using Cloudflare DNS-01 challenges to retrieve automatic wildcard SSL certificates. Your application containers remain isolated in a private Docker bridge network.
+### 2. Multi-Tenant Edge Routing & Wildcard SSL (Central Caddy Proxy)
+To eliminate the **1000 A-record limit** of traditional DNS-per-subdomain architectures, Liveforge routes all traffic dynamically using a **Central Caddy Proxy** on Panel VPS A:
+
+- **Wildcard A Record**: A single Wildcard A Record (`*.liveforge.io` or `*.yourdomain.com`) is created once in Cloudflare, pointing to the Panel VPS A IP. No individual application subdomains are ever created on Cloudflare.
+- **SSL Termination**: The central Caddy proxy on VPS A terminates TLS at the edge using a single wildcard certificate (`wildcard.crt` / `wildcard.key`). This certificate is automatically fetched/renewed using the Cloudflare DNS-01 API challenge.
+- **Dynamic Map Routing**: When an application is created or its deployment state changes, the engine atomically rewrites a local Caddy mapping file (`caddy_maps.txt`) matching: `<app-slug>.<domain> <worker_node_ip>`.
+- **Zero-Downtime Reload**: Caddy reloads dynamically in milliseconds via the unauthenticated local Admin API (`http://localhost:2019`) to apply new maps instantly without dropping active requests.
+- **Reverse Proxy**: Central Caddy reverse-proxies incoming HTTPS requests securely to port 443 of the respective customer node, where application containers run isolated in private Docker bridge networks.
 
 ### 3. Encrypted Remote Orchestration
 Because SSH access is restricted for host security, all lifecycle commands (e.g., Deploy, Stop, Restart, Rebuild, Migrate) are executed securely inside container sandboxes using a remote, encrypted **Docker API SSH Client** built directly into the engine.
